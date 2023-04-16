@@ -13,6 +13,10 @@ class ClubListCtrl {
 
     private $form;
     private $records;
+    private $page = 1;
+    private $num_pages;
+    private $start;
+    private $limit = 5;
 
     public function __construct() {
         $this->form = new ClubSearchForm();
@@ -35,6 +39,10 @@ class ClubListCtrl {
 
         $this->validate();
 
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $limit = 5;
+        $offset = ($page - 1) * $limit;
+
         $search_params = [];
         if (isset($this->form->clubname) && strlen($this->form->clubname) > 0) {
             $search_params['club_name[~]'] = $this->form->clubname . '%';
@@ -43,27 +51,58 @@ class ClubListCtrl {
         $num_params = sizeof($search_params);
         if ($num_params > 1) {
             $where = ["AND" => &$search_params];
+            
         } else {
             $where = &$search_params;
         }
-        $where ["ORDER"] = "club_name";
   
 
-        try {
-            $this->records = App::getDB()->select("clubs", [
-                "club_name",
-                "wins",
-                "draws",
-                "losses",
-                "club_id",
-                    ], $where);
-        } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-            if (App::getConf()->debug)
-                Utils::addErrorMessage($e->getMessage());
+        if(sizeof($where)>0){
+            try {
+                $this->records = App::getDB()->select("clubs", [
+                    "club_name",
+                    "wins",
+                    "draws",
+                    "losses",
+                    "club_id",
+                    ], $where, [
+                    "LIMIT" => [$offset, $limit],
+                    "ORDER" => "club_name"
+                ]);
+            } catch (\PDOException $e) {
+                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                if (App::getConf()->debug)
+                    Utils::addErrorMessage($e->getMessage());
+            }
+        }else{
+            try {
+                $this->records = App::getDB()->select("clubs", [
+                    "club_name",
+                    "wins",
+                    "draws",
+                    "losses",
+                    "club_id",
+                    ],  [
+                    'LIMIT' => [$offset, $limit],
+                    'ORDER' => 'club_name'
+                ]);
+            } catch (\PDOException $e) {
+                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                if (App::getConf()->debug)
+                    Utils::addErrorMessage($e->getMessage());
+            }
         }
+        
+
+        
+        $total = App::getDB()->count("clubs");
+        $num_pages = ceil($total / $limit);
 
         App::getSmarty()->assign('searchForm', $this->form);
+        App::getSmarty()->assign('page', $page);
+        App::getSmarty()->assign('num_pages', $num_pages);
+
+
         $this->generateView();
     }
 
@@ -144,11 +183,34 @@ class ClubListCtrl {
         }
     }
 
+    public function action_tab() {                  //stronicowanie
+
+    // Ustawienie numeru strony i ilości rekordów na stronie
+    $this->start = ($this->page - 1) * $this->limit;
+
+    try {
+        $this->records = App::getDB()->select("clubs", [
+            "club_name",
+            "wins",
+            "draws",
+            "losses",
+            "club_id",
+        ], [
+            'LIMIT' => [$this->start, $this->limit]
+        ]);
+    } catch (\PDOException $e) {
+        Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+        if (App::getConf()->debug)
+            Utils::addErrorMessage($e->getMessage());
+    }
+
+    $this->generateView();
+    }
+
     public function generateView() {
 
         App::getSmarty()->assign('clubs', $this->records);
         App::getSmarty()->display('ClubList.tpl');
-
     }
 
 }

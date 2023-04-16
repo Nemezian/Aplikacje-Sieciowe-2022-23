@@ -18,6 +18,7 @@ Utils::addRoute('registration',     'RegistrationCtrl');
 
 Utils::addRoute('clubList',         'ClubListCtrl',     ['User', 'Player', 'Captain', 'Administrator']);
 Utils::addRoute('clubDelete',       'ClubListCtrl',	    ['Captain', 'Administrator']);
+Utils::addRoute('tab',              'ClubListCtrl',     ['User', 'Player', 'Captain', 'Administrator']);
 
 Utils::addRoute('clubCreate',       'ClubEditCtrl',	    ['User']);
 Utils::addRoute('clubCreateShow',   'ClubEditCtrl',	    ['User']);

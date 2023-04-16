@@ -1,8 +1,9 @@
 {extends file="main.tpl"}
 
 {block name=top}
-	<div class="container">
-	<h1 color = 'red'>Odmowa dostępu</h1>
-
+	<div id="main" class="wrapper style1">
+		<div class="container">
+			<h2>Odmowa dostępu</h2>
+		</div>
 	</div>
 {/block}

@@ -1,18 +1,29 @@
 {extends file="main.tpl"}
 
 {block name=top}
-<form action="{$conf->action_root}login" method="post">
-<legend><center><h2><b>Logowanie do systemu</b></h2></center></legend><br>
-	<fieldset>
-        <div class="mb-3">
-			<label for="id_login">Login: </label></br>
-			<input id="id_login" type="text" name="login" maxlength="30" size="30"/>
-		</div>
-        <div class="mb-3">
-			<label for="id_pass">Hasło: </label></br>
-			<input id="id_pass" type="password" name="pass" maxlength="30" size="30"/><br />
-		</div>
-		<button type="submit" class="btn btn-primary">Zaloguj</button>
-	</fieldset>
-</form>	
+<div id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Logowanie</h2>
+		</header>
+		<section>
+			<form action="{$conf->action_root}login" method="post">
+				<div class="row gtr-uniform gtr-50">
+					<div class="col-12">
+						<input type="text" name="login" id="id_login" value="" placeholder="Login" />
+					</div>
+					<div class="col-12">
+						<input type="password" name="pass" id="id_pass" value="" placeholder="Hasło" maxlength="30" />
+					</div>
+					<div class="col-12">
+						<ul class="actions">
+							<li><input type="submit" value="Zaloguj" class="primary" /></li>
+							<li><input type="reset" value="Reset" /></li>
+						</ul>
+					</div>
+				</div>
+			</form>	
+		</section>
+	</div>
+</div>
 {/block}

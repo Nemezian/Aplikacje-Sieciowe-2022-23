@@ -1,27 +1,28 @@
 {extends file="main.tpl"}
 
 {block name=top}
-	<div>
-<form action="{$conf->action_url}registration" method="post" class="well form-horizontal">
-<fieldset>
-	
-<legend><center><h2><b>Rejestracja konta</b></h2></center></legend><br>
-
-         <div class="mb-3">
-			<label for="id_login" class="form-label">Login: </label></br>
-			<input id="id_login" class="form-control" type="text" name="registration_login" />
-		</div>
-        <div class="mb-3">	
-			<label for="id_reg_pass" class="form-label">Hasło: </label></br>
-			<input id="id_reg_pass" class="form-control" type="password" name="registration_pass" />
-		</div>
-		<div class="mb-3">
-			<label for="id_rep_pass" class="form-label">Powtórz hasło: </label></br>
-			<input id="id_rep_pass" class="form-control" type="password" name="repeated_pass" /><br />
-		</div>
-			<button type="submit" class="btn btn-primary">Zarejestruj konto</button> 
-	</fieldset>
-</form>	
-</div>
+<div id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Rejestracja konta</h2>
+		</header>
+		<section>
+			<form action="{$conf->action_root}registration" method="post">
+				<div class="row gtr-uniform gtr-50">
+					<div class="col-12">
+						<input type="text" name="registration_login" id="id_login" value="" placeholder="Login" />
+					</div>
+					<div class="col-12">	
+						<input type="password" name="registration_pass" id="id_reg_pass" value="" placeholder="Hasło" />
+					</div>
+					<div class="col-12">
+						<input type="password" name="repeated_pass" id="id_rep_pass" value="" placeholder="Powtórz hasło" />
+					</div>
+					<div class="col-12">
+						<input type="submit" value="Zarejestruj konto" class="primary" />
+					</div>
+			</form>
+		</section>	
 	</div>
+</div>
 {/block}
