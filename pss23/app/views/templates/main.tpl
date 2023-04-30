@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="{$conf->app_url}/css/style.css" />
 	<link rel="stylesheet" href="{$conf->app_url}/css/main.css" />
 	<noscript><link rel="stylesheet" href="{$conf->app_url}/css/noscript.css" /></noscript>
+	<script type="text/javascript" src="{$conf->app_url}/js/functions.js"></script>
 	</head>
 
 	<body class="is-preload landing">

@@ -35,7 +35,7 @@ class ClubListCtrl {
         return !App::getMessages()->isError();
     }
 
-    public function action_clubList() {
+    public function load_data() {
 
         $this->validate();
 
@@ -92,18 +92,12 @@ class ClubListCtrl {
                     Utils::addErrorMessage($e->getMessage());
             }
         }
-        
 
-        
         $total = App::getDB()->count("clubs");
         $num_pages = ceil($total / $limit);
 
-        App::getSmarty()->assign('searchForm', $this->form);
         App::getSmarty()->assign('page', $page);
         App::getSmarty()->assign('num_pages', $num_pages);
-
-
-        $this->generateView();
     }
 
     public function action_clubDelete() {
@@ -207,10 +201,24 @@ class ClubListCtrl {
     $this->generateView();
     }
 
+    public function action_clubList() {
+        $this->load_data();
+        App::getSmarty()->assign('searchForm', $this->form);
+        $this->generateView();
+    }
+
+    public function action_clubListPart() {
+        $this->load_data();
+        App::getSmarty()->assign('searchForm', $this->form);
+        App::getSmarty()->assign('clubs', $this->records);
+        App::getSmarty()->display('ClubListTable.tpl');
+    }
+
     public function generateView() {
 
         App::getSmarty()->assign('clubs', $this->records);
         App::getSmarty()->display('ClubList.tpl');
+
     }
 
 }
